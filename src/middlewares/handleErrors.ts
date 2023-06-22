@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import AppError from "../errors/AppError";
 import { z } from "zod";
 
-const handleErrors = (error: ErrorConstructor, req: Request, res: Response, nex: NextFunction): Response => {
+const handleErrors = (error: unknown, req: Request, res: Response, nex: NextFunction): Response => {
   if(error instanceof AppError) {
     return res.status(error.statusCode).json({ message: error.message })
   };

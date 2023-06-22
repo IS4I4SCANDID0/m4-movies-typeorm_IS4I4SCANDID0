@@ -1,15 +1,15 @@
 import { z } from "zod";
 
-const movies = z.object({
+const movieSchema = z.object({
   id: z.number().positive(),
   name: z.string().max(50),
-  description: z.string(),
+  description: z.string().nullish(),
   duration: z.number().positive(),
   price: z.number().positive()
 });
 
-const moviesCreate = movies.omit({ id: true }).partial({ description: true });
-const moviesUpdate = moviesCreate.partial({ name: true, duration: true, price: true });
-const moviesReturn = movies.array();
+const movieCreateSchema = movieSchema.omit({ id: true }).partial({ description: true });
+const movieUpdateSchema = movieCreateSchema.partial();
+const moviesReadSchema = movieSchema.array();
 
-export { moviesCreate, moviesUpdate, moviesReturn }
+export { movieSchema , movieCreateSchema, movieUpdateSchema, moviesReadSchema }

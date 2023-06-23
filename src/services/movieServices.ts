@@ -1,7 +1,7 @@
 import { TMovieCreate, TMovieRepo, TMovieUpdate, TMoviesRead, } from "../interfaces/movie.interfaces";
 import { AppDataSource } from "../data-source";
 import { Movie } from "../entities";
-import AppError from "../errors/AppError";
+import { IPagination, IPaginationParams } from "../interfaces/pagination.interface";
 
 
 const createMovie = async (payload: TMovieCreate): Promise<Movie> => {
@@ -11,11 +11,20 @@ const createMovie = async (payload: TMovieCreate): Promise<Movie> => {
   return movie;
 };
 
-const readMovies = async (): Promise<TMoviesRead> => {
+const readMovies = async ({ page, perPage, order,  sort, prevPage, nextPage }: IPaginationParams): Promise<IPagination> => {
   const repo: TMovieRepo = AppDataSource.getRepository(Movie);
-  const movies: Movie[] = await repo.find();
+  const [movies, count]: [Movie[], number] = await repo.findAndCount({
+    order: { [sort]: order },
+    skip: page,
+    take: perPage
+  });
 
-  return movies;
+  return {
+    prevPage: page <= 1 ? null : prevPage,
+    nextPage: count - page <= perPage ? null : nextPage,
+    count,
+    data: movies
+  };
 };
 
 const updateMovies = async (movie: Movie, payload: TMovieUpdate): Promise<Movie> => {
@@ -32,7 +41,5 @@ const eraseMovies = async (movie: Movie): Promise<void> => {
   
   return
 };
-
-
 
 export { createMovie, readMovies, updateMovies, eraseMovies };

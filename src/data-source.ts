@@ -12,12 +12,11 @@ const dataSourceConfig = (): DataSourceOptions => {
   if(nodeEnv === "test") {
     return{
       type: "sqlite",
-      database: ":memory",
+      database: ":memory:",
       synchronize: true,
       entities: [entitiesPath]
     };
   };
-  
   const dbUrl: string | undefined = process.env.DATABASE_URL;
   
   if(!dbUrl) {

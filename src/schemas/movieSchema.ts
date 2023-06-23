@@ -5,7 +5,7 @@ const movieSchema = z.object({
   name: z.string().max(50),
   description: z.string().nullish(),
   duration: z.number().positive(),
-  price: z.number().positive()
+  price: z.number().positive().int()
 });
 
 const movieCreateSchema = movieSchema.omit({ id: true }).partial({ description: true });

@@ -3,7 +3,6 @@ import { movieCreateSchema, movieSchema, moviesReadSchema, movieUpdateSchema } f
 import { DeepPartial, Repository } from "typeorm";
 import { Movie } from "../entities";
 
-// type TMovies = z.infer<typeof movieSchema>
 type TMovieCreate = z.infer<typeof movieCreateSchema>
 type TMoviesRead = z.infer<typeof moviesReadSchema>
 type TMovieUpdate = DeepPartial<TMovieCreate>
